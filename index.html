@@ -367,28 +367,64 @@
                     <input type="text" id="regAddress" required placeholder="গ্রাম/মহল্লা, থানা, জেলা" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
                 </div>
 
+                <!-- নতুন যুক্ত হওয়া অপশন: আপনি কী হার্টের রোগী? -->
                 <div>
                     <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
-                        রক্তের গ্রুপ (যদি জানা থাকে)
+                        আপনি কী হার্টের রোগী...? <span class="text-red-500">*</span>
                     </label>
-                    <select id="regBlood" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
-                        <option value="জানা নেই">জানা নেই</option>
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
+                    <select id="regHeartPatientStatus" onchange="toggleHeartPatientOptions()" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                        <option value="" disabled selected>নির্বাচন করুন</option>
+                        <option value="হ্যাঁ">হ্যাঁ</option>
+                        <option value="না">না</option>
+                        <option value="প্রাথমিক পরীক্ষা">হার্টের প্রাথমিক পরীক্ষা করতে চাই</option>
                     </select>
                 </div>
 
-                <div>
-                    <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
-                        পূর্ববর্তী রোগের বিবরণ (যদি থাকে)
+                <!-- হ্যাঁ সিলেক্ট করলে নিচের সাব-অপশনগুলো (একাধিক সিলেক্ট করার সুবিধা সহ) দেখা যাবে -->
+                <div id="heartSubOptionsContainer" class="hidden p-4 bg-red-50/70 rounded-2xl border border-red-100 space-y-3">
+                    <label class="block text-xs sm:text-sm font-bold text-red-700">
+                        <i class="fa-solid fa-circle-info mr-1"></i> পূর্ববর্তী হার্টের চিকিৎসা সংক্রান্ত তথ্য (একাধিক সিলেক্ট করতে পারেন):
                     </label>
-                    <textarea id="regHistory" rows="2" placeholder="যেমন: উচ্চ রক্তচাপ, ডায়াবেটিস, ইত্যাদি" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition"></textarea>
+                    
+                    <div class="space-y-2 text-sm text-slate-700">
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="checkbox" name="heartHistory" value="হার্টে রিং পরানো আছে" class="w-4 h-4 text-nhf-red border-slate-300 rounded focus:ring-nhf-red">
+                            <span>১. হার্টে রিং পরানো আছে কি?</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="checkbox" name="heartHistory" value="হার্টের বাইপাস সার্জারী করা হয়েছে" class="w-4 h-4 text-nhf-red border-slate-300 rounded focus:ring-nhf-red">
+                            <span>২. হার্টের বাইপাস সার্জারী করা হয়েছে কি?</span>
+                        </label>
+                        <label class="flex items-center space-x-2 space-x-reverse cursor-pointer">
+                            <input type="checkbox" name="heartHistory" value="ওপেন হার্ট সার্জারী হয়েছে" class="w-4 h-4 text-nhf-red border-slate-300 rounded focus:ring-nhf-red">
+                            <span>৩. ওপেন হার্ট সার্জারী হয়েছে কি?</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                            রক্তের গ্রুপ (যদি জানা থাকে)
+                        </label>
+                        <select id="regBlood" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                            <option value="জানা নেই">জানা নেই</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                            অন্যান্য রোগের বিবরণ (যদি থাকে)
+                        </label>
+                        <input type="text" id="regHistory" placeholder="যেমন: ডায়াবেটিস, উচ্চ রক্তচাপ" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                    </div>
                 </div>
 
                 <div class="p-3 bg-red-50 rounded-xl border border-red-100 flex items-center space-x-2">
@@ -466,7 +502,7 @@
                 </button>
             </div>
 
-            <div class="p-6 space-y-4">
+            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
                 <div class="bg-red-50 p-4 rounded-2xl border border-red-100 flex items-center justify-between">
                     <div>
                         <p class="text-xs text-red-500 font-semibold">সিরিয়াল নম্বর</p>
@@ -502,7 +538,12 @@
                 </div>
 
                 <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-sm">
-                    <p class="text-xs text-slate-400 font-medium">পূর্ববর্তী রোগের বিবরণ</p>
+                    <p class="text-xs text-slate-400 font-medium">হার্টের রোগী স্ট্যাটাস ও চিকিৎসা বিবরণ</p>
+                    <p id="viewHeartStatus" class="font-semibold text-slate-800 mt-0.5">--</p>
+                </div>
+
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-sm">
+                    <p class="text-xs text-slate-400 font-medium">অন্যান্য রোগের বিবরণ</p>
                     <p id="viewHistory" class="font-semibold text-slate-700 mt-0.5">--</p>
                 </div>
 
@@ -574,7 +615,7 @@
 
         <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
             <p>© ২০২৬ ন্যাশনাল হার্ট ফাউন্ডেশন। সর্বস্বত্ব সংরক্ষিত।</p>
-                    </div>
+        </div>
     </footer>
 
     <!-- Firebase Realtime Database SDKs -->
@@ -612,7 +653,6 @@
                 Object.keys(data).forEach(key => {
                     patientsList.push({ dbKey: key, ...data[key] });
                 });
-                // Sort chronologically by timestamp
                 patientsList.sort((a, b) => a.timestamp - b.timestamp);
             }
             renderAdminDashboard();
@@ -628,6 +668,7 @@
         function openRegistrationModal() {
             document.getElementById('patientForm').reset();
             document.getElementById('editKey').value = '';
+            document.getElementById('heartSubOptionsContainer').classList.add('hidden');
             document.getElementById('registrationModal').classList.remove('hidden');
         }
 
@@ -641,6 +682,18 @@
 
         function closeViewDetailModal() {
             document.getElementById('viewDetailModal').classList.add('hidden');
+        }
+
+        function toggleHeartPatientOptions() {
+            const status = document.getElementById('regHeartPatientStatus').value;
+            const subContainer = document.getElementById('heartSubOptionsContainer');
+            if (status === 'হ্যাঁ') {
+                subContainer.classList.remove('hidden');
+            } else {
+                subContainer.classList.add('hidden');
+                // Uncheck checkboxes if hidden
+                document.querySelectorAll('input[name="heartHistory"]').forEach(cb => cb.checked = false);
+            }
         }
 
         function showSection(section) {
@@ -720,15 +773,24 @@
             const nid = document.getElementById('regNid').value.trim();
             const mobile = document.getElementById('regMobile').value.trim();
             const address = document.getElementById('regAddress').value.trim();
+            const heartPatientStatus = document.getElementById('regHeartPatientStatus').value;
+            
+            // Collect selected heart history checkboxes
+            let selectedHeartSurgeries = [];
+            if (heartPatientStatus === 'হ্যাঁ') {
+                document.querySelectorAll('input[name="heartHistory"]:checked').forEach(cb => {
+                    selectedHeartSurgeries.push(cb.value);
+                });
+            }
+
             const blood = document.getElementById('regBlood').value;
             const history = document.getElementById('regHistory').value.trim() || 'নাই';
             
             const now = new Date();
 
             if (editKey) {
-                // Update Existing Patient Data
                 const updateData = {
-                    name, age, gender, nid, mobile, address, blood, history
+                    name, age, gender, nid, mobile, address, heartPatientStatus, heartSurgeries: selectedHeartSurgeries, blood, history
                 };
                 try {
                     await window.update(window.ref(window.db, 'patients/' + editKey), updateData);
@@ -743,7 +805,6 @@
                     submitBtn.disabled = false;
                 }
             } else {
-                // Add New Patient Data
                 const serial = generateSerial();
                 const newPatient = {
                     serial,
@@ -753,6 +814,8 @@
                     nid,
                     mobile,
                     address,
+                    heartPatientStatus,
+                    heartSurgeries: selectedHeartSurgeries,
                     blood,
                     history,
                     timestamp: Date.now(),
@@ -763,7 +826,6 @@
                     const newPatientRef = window.push(window.ref(window.db, 'patients'));
                     await window.set(newPatientRef, newPatient);
 
-                    // Send SMS via BulkSMS API
                     sendSmsNotification(mobile, name, serial);
 
                     document.getElementById('tokenSerial').innerText = serial;
@@ -826,7 +888,6 @@
                 noData.classList.add('hidden');
             }
 
-            // Render Table Rows Chronologically
             patientsList.forEach((patient, index) => {
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-50 transition';
@@ -863,9 +924,15 @@
             document.getElementById('viewNid').innerText = patient.nid;
             document.getElementById('viewAddress').innerText = patient.address;
             document.getElementById('viewBlood').innerText = patient.blood;
+            
+            // Format Heart status display
+            let heartStatusText = `স্ট্যাটাস: ${patient.heartPatientStatus || 'প্রদান করা হয়নি'}`;
+            if (patient.heartSurgeries && patient.heartSurgeries.length > 0) {
+                heartStatusText += `<br><span class="text-xs text-red-600 font-medium">চিকিৎসা বিবরণ: ${patient.heartSurgeries.join(', ')}</span>`;
+            }
+            document.getElementById('viewHeartStatus').innerHTML = heartStatusText;
             document.getElementById('viewHistory').innerText = patient.history;
 
-            // Set Action handlers inside View Modal
             document.getElementById('btnEditInModal').onclick = () => editPatient(dbKey);
             document.getElementById('btnDeleteInModal').onclick = () => deletePatient(dbKey);
 
@@ -883,6 +950,18 @@
             document.getElementById('regNid').value = patient.nid;
             document.getElementById('regMobile').value = patient.mobile;
             document.getElementById('regAddress').value = patient.address;
+            document.getElementById('regHeartPatientStatus').value = patient.heartPatientStatus || '';
+            
+            // Trigger toggle to show/hide and set checkboxes
+            toggleHeartPatientOptions();
+            if (patient.heartSurgeries && Array.isArray(patient.heartSurgeries)) {
+                document.querySelectorAll('input[name="heartHistory"]').forEach(cb => {
+                    if (patient.heartSurgeries.includes(cb.value)) {
+                        cb.checked = true;
+                    }
+                });
+            }
+
             document.getElementById('regBlood').value = patient.blood;
             document.getElementById('regHistory').value = patient.history === 'নাই' ? '' : patient.history;
 
