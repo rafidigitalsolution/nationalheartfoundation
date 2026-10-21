@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রোগী রেজিস্ট্রেশন | ন্যাশনাল হার্ট ফাউন্ডেশন</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Hind Siliguri', 'sans-serif'],
+                    },
+                    colors: {
+                        nhf: {
+                            red: '#D90429',
+                            darkRed: '#EF233C',
+                            softBg: '#F8FAFC',
+                            cardBg: '#FFFFFF',
+                            emerald: '#10B981',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #F8FAFC;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(217, 4, 41, 0.4); }
+            50% { box-shadow: 0 0 28px rgba(217, 4, 41, 0.7); }
+        }
+        .btn-glow { animation: pulseGlow 2.5s infinite; }
+
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white !important; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-slate-800 antialiased selection:bg-red-100 selection:text-red-600">
+
+    <!-- TOP HEADER -->
+    <header class="sticky top-0 z-30 glass-panel border-b border-slate-200/80 shadow-sm no-print">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="showSection('home')">
+                <div class="w-10 h-10 sm:w-12 sm:h-12 bg-nhf-red text-white rounded-full flex items-center justify-center shadow-md">
+                    <i class="fa-solid font-bold fa-heart-pulse text-xl sm:text-2xl animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight leading-tight">
+                        ন্যাশনাল হার্ট ফাউন্ডেশন
+                    </h1>
+                    <p class="text-xs text-slate-500 font-medium">স্মার্ট অনলাইন রেজিস্ট্রেশন</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2 sm:space-x-4 space-x-reverse">
+                <button onclick="openRegistrationModal()" class="hidden md:flex items-center space-x-2 bg-nhf-red hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition duration-200 shadow-md">
+                    <i class="fa-solid fa-plus-circle"></i>
+                    <span>নতুন রেজিস্ট্রেশন</span>
+                </button>
+
+                <button onclick="openAdminAuth()" class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-medium px-3 py-2 rounded-xl transition duration-200 border border-slate-200">
+                    <i class="fa-solid fa-user-shield text-slate-500"></i>
+                    <span>এডমিন</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-10">
+
+        <!-- LANDING SECTION -->
+        <section id="homeSection" class="block space-y-8">
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-red-600 via-nhf-red to-red-800 text-white p-6 sm:p-12 shadow-xl">
+                <div class="relative z-10 max-w-2xl space-y-4 text-center sm:text-left">
+                    <span class="inline-block px-3 py-1 rounded-full bg-white/20 text-white text-xs font-semibold tracking-wide backdrop-blur-sm">
+                        <i class="fa-solid fa-bolt mr-1"></i> দ্রুত ও সহজ অনলাইন রেজিস্ট্রেশন
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold leading-snug">
+                         আপনার রেজিস্ট্রেশন সম্পন্ন করুন
+                    </h2>
+                    <p class="text-red-100 text-sm sm:text-base leading-relaxed">
+                        ঘরে বসেই আপনার সঠিক তথ্য দিয়ে রেজিস্ট্রেশন সম্পন্ন করুন এবং সহজে সিরিয়াল নিন। 
+                    </p>
+
+                    <div class="pt-4 flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4">
+                        <button onclick="openRegistrationModal()" class="btn-glow w-full sm:w-auto px-8 py-4 bg-white text-nhf-red hover:bg-red-50 font-bold text-lg sm:text-xl rounded-2xl transition duration-300 transform active:scale-95 shadow-2xl flex items-center justify-center space-x-3">
+                            <i class="fa-solid fa-heart-pulse text-nhf-red text-2xl"></i>
+                            <span>রেজিস্ট্রেশন করুন</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-start space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-red-50 text-nhf-red flex items-center justify-center flex-shrink-0 text-xl font-bold">১</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base mb-1">তথ্য ফরম পূরণ</h3>
+                        <p class="text-xs sm:text-sm text-slate-500">আপনার সঠিক নাম, বয়স, এনআইডি ও সচল মোবাইল নম্বর সঠিকভাবে প্রদান করুন।</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-start space-x-4">
+                    <div class="w-12 h-12 rounded-xl bg-red-50 text-nhf-red flex items-center justify-center flex-shrink-0 text-xl font-bold">২</div>
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base mb-1">NID ফটোকপি নিয়ে আসুন</h3>
+                        <p class="text-xs sm:text-sm text-slate-500">হাসপাতালে আসার সময় অবশ্যই আপনার NID/পরিচয়পত্রের ফটোকপি সাথে নিয়ে আসবেন।</p>
+                    </div>              
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN DASHBOARD OVERVIEW SECTION -->
+        <section id="adminOverviewSection" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie text-nhf-red"></i> এডমিন ওভারভিউ ড্যাশবোর্ড
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-500">রোগী রেজিস্ট্রেশনের সামারি ও পরিসংখ্যান</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="showAdminSubSection('list')" class="px-4 py-2.5 bg-nhf-red hover:bg-red-700 text-white rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-md">
+                        <i class="fa-solid fa-list-check"></i>
+                        <span>সকল রোগীর তালিকা</span>
+                    </button>
+                    <button onclick="logoutAdmin()" class="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs sm:text-sm font-semibold transition border border-slate-200">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dashboard Analytics Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">মোট রেজিস্ট্রেশন</p>
+                        <h3 id="statTotalPatients" class="text-3xl font-black text-slate-800 mt-2">০</h3>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-red-50 text-nhf-red flex items-center justify-center text-2xl shadow-inner">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">মোট পুরুষ রোগী</p>
+                        <h3 id="statMalePatients" class="text-3xl font-black text-blue-600 mt-2">০</h3>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl shadow-inner">
+                        <i class="fa-solid fa-mars"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">মোট নারী রোগী</p>
+                        <h3 id="statFemalePatients" class="text-3xl font-black text-pink-500 mt-2">০</h3>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-pink-50 text-pink-500 flex items-center justify-center text-2xl shadow-inner">
+                        <i class="fa-solid fa-venus"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">অন্যান্য</p>
+                        <h3 id="statOtherPatients" class="text-3xl font-black text-purple-600 mt-2">০</h3>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl shadow-inner">
+                        <i class="fa-solid fa-genderless"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">আজকের নতুন রোগী</p>
+                        <h3 id="statTodayPatients" class="text-3xl font-black text-emerald-600 mt-2">০</h3>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl shadow-inner">
+                        <i class="fa-solid fa-calendar-day"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">সর্বশেষ সিরিয়াল</p>
+                        <h3 id="statLastSerial" class="text-3xl font-black text-slate-800 mt-2">NHF-1000</h3>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-2xl shadow-inner">
+                        <i class="fa-solid fa-list-ol"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN ALL PATIENTS LIST SECTION (SEPARATE PAGE) -->
+        <section id="adminListSection" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <button onclick="showAdminSubSection('overview')" class="w-9 h-9 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl flex items-center justify-center transition">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <div>
+                        <h2 class="text-xl sm:text-2xl font-bold text-slate-900">রোগীদের সম্পূর্ণ তালিকা</h2>
+                        <p class="text-xs text-slate-500">ক্রমানুসারে রোগীর সকল তালিকা নিচে দেওয়া হলো</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="printAdminTable()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-file-pdf"></i>
+                        <span>PDF / প্রিন্ট</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Search Bar Above Table -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center">
+                <div class="relative w-full">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400 text-sm"></i>
+                    <input type="text" id="adminSearchInput" onkeyup="filterPatientTable()" placeholder="রোগীর নাম, মোবাইল নম্বর বা NID দিয়ে সরাসরি খুঁজুন..." class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-nhf-red focus:bg-white transition">
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div id="printableArea" class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+                <div class="p-5 border-b border-slate-100 hidden print-only text-center">
+                    <h2 class="text-2xl font-bold text-slate-900">ন্যাশনাল হার্ট ফাউন্ডেশন</h2>
+                    <p class="text-sm text-slate-600">নিবন্ধিত রোগীদের তালিকা</p>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 text-slate-600 text-xs font-semibold uppercase tracking-wider border-b border-slate-100">
+                                <th class="p-4 text-center">ক্রমিক নং</th>
+                                <th class="p-4">নাম</th>
+                                <th class="p-4">মোবাইল</th>
+                                <th class="p-4">বয়স</th>
+                                <th class="p-4">NID</th>
+                                <th class="p-4">ঠিকানা</th>
+                                <th class="p-4 text-center">রক্তের গ্রুপ</th>
+                                <th class="p-4 text-center no-print">অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientTableBody" class="divide-y divide-slate-100 text-sm">
+                        </tbody>
+                    </table>
+                </div>
+                <div id="noDataMessage" class="p-10 text-center text-slate-400 hidden">
+                    <i class="fa-solid fa-folder-open text-4xl mb-2 text-slate-300"></i>
+                    <p class="text-sm">কোনো রোগী রেজিস্ট্রেশন রেকর্ড পাওয়া যায়নি!</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- REGISTRATION FORM MODAL -->
+    <div id="registrationModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 hidden overflow-y-auto">
+        <div class="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden my-auto border border-slate-100">
+            <div class="bg-gradient-to-r from-nhf-red to-red-700 px-6 py-5 text-white flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
+                        <i class="fa-solid fa-clipboard-user text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold">রোগী রেজিস্ট্রেশন ফরম</h3>
+                        <p class="text-xs text-red-100">সঠিক তথ্য দিয়ে ফরমটি পূরণ করুন</p>
+                    </div>
+                </div>
+                <button onclick="closeRegistrationModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="patientForm" onsubmit="handleRegistrationSubmit(event)" class="p-5 sm:p-7 space-y-4 max-h-[80vh] overflow-y-auto">
+                <input type="hidden" id="editKey" value="">
+
+                <div>
+                    <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                        রোগীর নাম <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="regName" required placeholder="উদাহরণ: মো: রহিম উদ্দিন" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                            বয়স (বছরে) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" id="regAge" min="1" max="120" required placeholder="যেমন: ৪৫" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                            লিঙ্গ <span class="text-red-500">*</span>
+                        </label>
+                        <select id="regGender" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                            <option value="" disabled selected>নির্বাচন করুন</option>
+                            <option value="পুরুষ">পুরুষ</option>
+                            <option value="মহিলা">মহিলা</option>
+                            <option value="অন্যান্য">অন্যান্য</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                            NID / পরিচয়পত্র নম্বর <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="regNid" required placeholder="যেমন: 1234567890" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                            মোবাইল নম্বর <span class="text-red-500">*</span>
+                        </label>
+                        <input type="tel" id="regMobile" required placeholder="উদাহরণ: 01700000000" pattern="[0-9]{11}" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                        ঠিকানা <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" id="regAddress" required placeholder="গ্রাম/মহল্লা, থানা, জেলা" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                        রক্তের গ্রুপ (যদি জানা থাকে)
+                    </label>
+                    <select id="regBlood" class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition">
+                        <option value="জানা নেই">জানা নেই</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs sm:text-sm font-semibold text-slate-700 mb-1">
+                        পূর্ববর্তী রোগের বিবরণ (যদি থাকে)
+                    </label>
+                    <textarea id="regHistory" rows="2" placeholder="যেমন: উচ্চ রক্তচাপ, ডায়াবেটিস, ইত্যাদি" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red focus:bg-white outline-none transition"></textarea>
+                </div>
+
+                <div class="p-3 bg-red-50 rounded-xl border border-red-100 flex items-center space-x-2">
+                    <i class="fa-solid fa-circle-exclamation text-nhf-red text-sm flex-shrink-0"></i>
+                    <p class="text-xs font-bold text-nhf-red leading-tight">
+                        বিশেষ দ্রষ্টব্য: হাসপাতালে আসার সময় অবশ্যই NID ফটোকপি সাথে নিয়ে আসবেন।
+                    </p>
+                </div>
+
+                <div class="pt-3">
+                    <button type="submit" id="btnSubmitForm" class="w-full py-4 bg-nhf-red hover:bg-red-700 text-white text-lg font-bold rounded-2xl shadow-xl transition transform active:scale-98 flex items-center justify-center gap-2">
+                        <span>রেজিস্ট্রেশন জমা দিন</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SUCCESS TOKEN MODAL -->
+    <div id="successModal" class="fixed inset-0 z-50 bg-slate-900/70 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 hidden">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden my-auto p-6 sm:p-8 text-center space-y-5 relative">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+
+            <div>
+                <h3 class="text-2xl font-black text-slate-800">রেজিস্ট্রেশন সফল হয়েছে!</h3>
+                <p class="text-xs text-slate-500 mt-1">আপনার মোবাইলে কনফারমেশন এসএমএস পাঠানো হয়েছে।</p>
+            </div>
+
+            <div id="printableTokenCard" class="bg-slate-50 p-5 rounded-2xl border border-slate-200 text-left space-y-3 relative">
+                <div class="border-b border-slate-200 pb-2 flex justify-between items-center">
+                    <span class="text-xs font-semibold text-slate-400">সিরিয়াল নম্বর</span>
+                    <span id="tokenSerial" class="text-lg font-black text-nhf-red">NHF-1001</span>
+                </div>
+                
+                <div class="space-y-1.5 text-xs text-slate-700">
+                    <p><span class="font-semibold text-slate-500">নাম:</span> <span id="tokenName" class="font-bold text-slate-900">--</span></p>
+                    <p><span class="font-semibold text-slate-500">মোবাইল:</span> <span id="tokenMobile">--</span></p>
+                    <p><span class="font-semibold text-slate-500">NID:</span> <span id="tokenNid">--</span></p>
+                    <p><span class="font-semibold text-slate-500">বয়স / লিঙ্গ:</span> <span id="tokenAgeGender">--</span></p>
+                </div>
+
+                <div class="pt-2 text-center border-t border-dashed border-slate-200">
+                    <p class="text-[11px] font-bold text-red-600">
+                        <i class="fa-solid fa-triangle-exclamation"></i> NID ফটোকপি সাথে আনতে ভুলবেন না
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex gap-3 no-print">
+                <button onclick="window.print()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-print"></i> প্রিন্ট বা সেভ করুন
+                </button>
+                <button onclick="closeSuccessModal()" class="flex-1 py-2.5 bg-nhf-red hover:bg-red-700 text-white rounded-xl text-xs font-bold transition">
+                    ঠিক আছে
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PATIENT FULL DETAILS VIEW CARD (MODAL WITH EDIT & DELETE) -->
+    <div id="viewDetailModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <div class="w-8 h-8 rounded-full bg-nhf-red flex items-center justify-center">
+                        <i class="fa-solid fa-id-card text-sm"></i>
+                    </div>
+                    <h3 class="font-bold text-base">রোগীর সম্পূন্ন তথ্য কার্ড</h3>
+                </div>
+                <button onclick="closeViewDetailModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div class="bg-red-50 p-4 rounded-2xl border border-red-100 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-red-500 font-semibold">সিরিয়াল নম্বর</p>
+                        <h4 id="viewSerial" class="text-2xl font-black text-nhf-red">NHF-1001</h4>
+                    </div>
+                    <div class="text-right">
+                        <span id="viewBlood" class="px-3 py-1 bg-nhf-red text-white text-xs font-bold rounded-full">A+</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 text-sm">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <p class="text-xs text-slate-400 font-medium">রোগীর নাম</p>
+                        <p id="viewName" class="font-bold text-slate-800 mt-0.5">--</p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <p class="text-xs text-slate-400 font-medium">মোবাইল নম্বর</p>
+                        <p id="viewMobile" class="font-bold text-slate-800 mt-0.5">--</p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <p class="text-xs text-slate-400 font-medium">বয়স ও লিঙ্গ</p>
+                        <p id="viewAgeGender" class="font-bold text-slate-800 mt-0.5">--</p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <p class="text-xs text-slate-400 font-medium">NID নম্বর</p>
+                        <p id="viewNid" class="font-bold text-slate-800 mt-0.5">--</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-sm">
+                    <p class="text-xs text-slate-400 font-medium">ঠিকানা</p>
+                    <p id="viewAddress" class="font-semibold text-slate-800 mt-0.5">--</p>
+                </div>
+
+                <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-sm">
+                    <p class="text-xs text-slate-400 font-medium">পূর্ববর্তী রোগের বিবরণ</p>
+                    <p id="viewHistory" class="font-semibold text-slate-700 mt-0.5">--</p>
+                </div>
+
+                <!-- Action Buttons: Edit and Delete inside View Card -->
+                <div class="pt-2 flex gap-3">
+                    <button id="btnEditInModal" onclick="" class="flex-1 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-pen-to-square"></i> তথ্য এডিট করুন
+                    </button>
+                    <button id="btnDeleteInModal" onclick="" class="flex-1 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-trash-can"></i> রেকর্ড মুছুন
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADMIN PASSWORD PROMPT MODAL -->
+    <div id="adminAuthModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 text-center space-y-4">
+            <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-2xl flex items-center justify-center mx-auto text-xl">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-slate-800">এডমিন এক্সেস</h3>
+                <p class="text-xs text-slate-500">ড্যাশবোর্ডে প্রবেশ করতে পাসওয়ার্ড দিন</p>
+            </div>
+            
+            <form onsubmit="verifyAdminPassword(event)" class="space-y-3">
+                <input type="password" id="adminPasswordInput" placeholder="পাসওয়ার্ড লিখুন" required class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-nhf-red outline-none text-center tracking-widest">
+                <p id="adminAuthError" class="text-xs text-red-500 hidden font-medium">ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।</p>
+                
+                <div class="flex gap-2">
+                    <button type="button" onclick="closeAdminAuth()" class="flex-1 py-2 bg-slate-100 text-slate-600 rounded-xl text-xs font-semibold">বাতিল</button>
+                    <button type="submit" class="flex-1 py-2 bg-nhf-red hover:bg-red-700 text-white rounded-xl text-xs font-semibold">প্রবেশ করুন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-white border-t border-slate-800 pt-10 pb-6 mt-12 no-print">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-slate-800">
+            <div>
+                <div class="flex items-center space-x-3 space-x-reverse mb-3">
+                    <div class="w-8 h-8 bg-nhf-red text-white rounded-full flex items-center justify-center">
+                        <i class="fa-solid fa-heart-pulse text-sm"></i>
+                    </div>
+                    <h3 class="font-bold text-base text-slate-100">ন্যাশনাল হার্ট ফাউন্ডেশন</h3>
+                </div>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    হৃদরোগীদের সুচিকিৎসা ও আধুনিক স্বাস্থ্যসেবা পৌঁছে দিতে আমরা প্রতিজ্ঞাবদ্ধ। ঘরে বসেই অনলাইন রেজিস্ট্রেশন করুন।
+                </p>
+            </div>
+
+            <div class="flex flex-col space-y-2 text-xs text-slate-400">
+                <h4 class="font-bold text-slate-200 text-sm mb-1">জরুরি লিংক</h4>
+                <a href="#" onclick="openRegistrationModal(); return false;" class="hover:text-white transition">রোগী রেজিস্ট্রেশন ফরম</a>
+                <a href="#" onclick="openAdminAuth(); return false;" class="hover:text-white transition">এডমিন প্যানেল লগইন</a>
+            </div>
+
+            <div>
+                <h4 class="font-bold text-slate-200 text-sm mb-2">কারিগরি সহযোগিতায়</h4>
+                <a href="https://wa.me/8801763752653" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 text-emerald-400 hover:text-emerald-300 font-bold bg-slate-800/80 px-4 py-2.5 rounded-xl border border-slate-700 transition">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>nexis cyber & Software</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <p>© ২০২৬ ন্যাশনাল হার্ট ফাউন্ডেশন। সর্বস্বত্ব সংরক্ষিত।</p>
+            <p class="text-[11px]">নিরাপদ ডিজিটাল স্বাস্থ্যসেবা প্ল্যাটফর্ম</p>
+        </div>
+    </footer>
+
+    <!-- Firebase Realtime Database SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, push, set, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCn1mEqZROpzGsVWfRA-sa9_pkgVuN57kI",
+          authDomain: "event-reg-83774.firebaseapp.com",
+          projectId: "event-reg-83774",
+          storageBucket: "event-reg-83774.firebasestorage.app",
+          messagingSenderId: "1056857350958",
+          appId: "1:1056857350958:web:05655c62d5d7bea5c1d0bf",
+          databaseURL: "https://event-reg-83774-default-rtdb.firebaseio.com"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.db = db;
+        window.ref = ref;
+        window.push = push;
+        window.set = set;
+        window.onValue = onValue;
+        window.remove = remove;
+        window.update = update;
+
+        // Listen for Realtime Database Updates
+        const patientsRef = window.ref(window.db, 'patients');
+        window.onValue(patientsRef, (snapshot) => {
+            const data = snapshot.val();
+            patientsList = [];
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    patientsList.push({ dbKey: key, ...data[key] });
+                });
+                // Sort chronologically by timestamp
+                patientsList.sort((a, b) => a.timestamp - b.timestamp);
+            }
+            renderAdminDashboard();
+        });
+    </script>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        const START_SERIAL = 1001;
+        const ADMIN_PASS = 'abc123';
+        let patientsList = [];
+
+        function openRegistrationModal() {
+            document.getElementById('patientForm').reset();
+            document.getElementById('editKey').value = '';
+            document.getElementById('registrationModal').classList.remove('hidden');
+        }
+
+        function closeRegistrationModal() {
+            document.getElementById('registrationModal').classList.add('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        function closeViewDetailModal() {
+            document.getElementById('viewDetailModal').classList.add('hidden');
+        }
+
+        function showSection(section) {
+            document.getElementById('homeSection').classList.add('hidden');
+            document.getElementById('adminOverviewSection').classList.add('hidden');
+            document.getElementById('adminListSection').classList.add('hidden');
+
+            if (section === 'admin') {
+                showAdminSubSection('overview');
+            } else {
+                document.getElementById('homeSection').classList.remove('hidden');
+            }
+        }
+
+        function showAdminSubSection(sub) {
+            document.getElementById('adminOverviewSection').classList.add('hidden');
+            document.getElementById('adminListSection').classList.add('hidden');
+
+            if (sub === 'list') {
+                document.getElementById('adminListSection').classList.remove('hidden');
+            } else {
+                document.getElementById('adminOverviewSection').classList.remove('hidden');
+            }
+        }
+
+        function openAdminAuth() {
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('adminAuthError').classList.add('hidden');
+            document.getElementById('adminAuthModal').classList.remove('hidden');
+        }
+
+        function closeAdminAuth() {
+            document.getElementById('adminAuthModal').classList.add('hidden');
+        }
+
+        function verifyAdminPassword(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPasswordInput').value;
+            if (pass === ADMIN_PASS) {
+                closeAdminAuth();
+                showSection('admin');
+            } else {
+                document.getElementById('adminAuthError').classList.remove('hidden');
+            }
+        }
+
+        function logoutAdmin() {
+            showSection('home');
+        }
+
+        function generateSerial() {
+            if (patientsList.length === 0) {
+                return `NHF-${START_SERIAL}`;
+            }
+            const lastPatient = patientsList[patientsList.length - 1];
+            if (lastPatient && lastPatient.serial) {
+                const parts = lastPatient.serial.split('-');
+                if (parts.length === 2) {
+                    const nextNum = parseInt(parts[1], 10) + 1;
+                    return `NHF-${nextNum}`;
+                }
+            }
+            return `NHF-${START_SERIAL + patientsList.length}`;
+        }
+
+        async function handleRegistrationSubmit(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('btnSubmitForm');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> প্রসেসিং হচ্ছে...`;
+
+            const editKey = document.getElementById('editKey').value;
+            const name = document.getElementById('regName').value.trim();
+            const age = document.getElementById('regAge').value.trim();
+            const gender = document.getElementById('regGender').value;
+            const nid = document.getElementById('regNid').value.trim();
+            const mobile = document.getElementById('regMobile').value.trim();
+            const address = document.getElementById('regAddress').value.trim();
+            const blood = document.getElementById('regBlood').value;
+            const history = document.getElementById('regHistory').value.trim() || 'নাই';
+            
+            const now = new Date();
+
+            if (editKey) {
+                // Update Existing Patient Data
+                const updateData = {
+                    name, age, gender, nid, mobile, address, blood, history
+                };
+                try {
+                    await window.update(window.ref(window.db, 'patients/' + editKey), updateData);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<span>রেজিস্ট্রেশন জমা দিন</span> <i class="fa-solid fa-paper-plane"></i>`;
+                    closeRegistrationModal();
+                    closeViewDetailModal();
+                    alert('রোগীর তথ্য সফলভাবে আপডেট করা হয়েছে!');
+                } catch (err) {
+                    console.error("Update error: ", err);
+                    alert("তথ্য আপডেট করতে সমস্যা হয়েছে।");
+                    submitBtn.disabled = false;
+                }
+            } else {
+                // Add New Patient Data
+                const serial = generateSerial();
+                const newPatient = {
+                    serial,
+                    name,
+                    age,
+                    gender,
+                    nid,
+                    mobile,
+                    address,
+                    blood,
+                    history,
+                    timestamp: Date.now(),
+                    dateObj: now.toISOString()
+                };
+
+                try {
+                    const newPatientRef = window.push(window.ref(window.db, 'patients'));
+                    await window.set(newPatientRef, newPatient);
+
+                    // Send SMS via BulkSMS API
+                    sendSmsNotification(mobile, name, serial);
+
+                    document.getElementById('tokenSerial').innerText = serial;
+                    document.getElementById('tokenName').innerText = name;
+                    document.getElementById('tokenMobile').innerText = mobile;
+                    document.getElementById('tokenNid').innerText = nid;
+                    document.getElementById('tokenAgeGender').innerText = `${age} বছর (${gender})`;
+
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<span>রেজিস্ট্রেশন জমা দিন</span> <i class="fa-solid fa-paper-plane"></i>`;
+                    closeRegistrationModal();
+                    document.getElementById('successModal').classList.remove('hidden');
+                } catch (err) {
+                    console.error("Firebase save error: ", err);
+                    alert("তথ্য সংরক্ষণ করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।");
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `<span>রেজিস্ট্রেশন জমা দিন</span> <i class="fa-solid fa-paper-plane"></i>`;
+                }
+            }
+        }
+
+        function sendSmsNotification(receiverMobile, patientName, serialNumber) {
+            const apiKey = 'Q0V9sGAPdpwPKTHsmSoa';
+            const senderId = '8809648908266';
+            const smsText = `অভিনন্দন ${patientName}\nআপনার রেজিস্ট্রেশন সফল হয়েছে\nরেজিস্ট্রেশন নং ${serialNumber}\n-ন্যাশনাল হার্ট ফাউন্ডেশন`;
+            
+            const encodedMessage = encodeURIComponent(smsText);
+            const apiUrl = `http://bulksmsbd.net/api/smsapi?api_key=${apiKey}&type=text&number=${receiverMobile}&senderid=${senderId}&message=${encodedMessage}`;
+
+            fetch(apiUrl, { method: 'GET', mode: 'no-cors' })
+                .then(() => console.log('SMS Request sent'))
+                .catch(err => console.log('SMS Request error:', err));
+        }
+
+        function renderAdminDashboard() {
+            const tbody = document.getElementById('patientTableBody');
+            const noData = document.getElementById('noDataMessage');
+            tbody.innerHTML = '';
+
+            const total = patientsList.length;
+            const maleCount = patientsList.filter(p => p.gender === 'পুরুষ').length;
+            const femaleCount = patientsList.filter(p => p.gender === 'মহিলা').length;
+            const otherCount = patientsList.filter(p => p.gender === 'অন্যান্য').length;
+
+            document.getElementById('statTotalPatients').innerText = total.toLocaleString('bn-BD');
+            document.getElementById('statMalePatients').innerText = maleCount.toLocaleString('bn-BD');
+            document.getElementById('statFemalePatients').innerText = femaleCount.toLocaleString('bn-BD');
+            document.getElementById('statOtherPatients').innerText = otherCount.toLocaleString('bn-BD');
+
+            document.getElementById('statLastSerial').innerText = total > 0 ? patientsList[total - 1].serial : 'NHF-1000';
+
+            const todayStr = new Date().toDateString();
+            const todayCount = patientsList.filter(p => new Date(p.dateObj).toDateString() === todayStr).length;
+            document.getElementById('statTodayPatients').innerText = todayCount.toLocaleString('bn-BD');
+
+            if (total === 0) {
+                noData.classList.remove('hidden');
+                return;
+            } else {
+                noData.classList.add('hidden');
+            }
+
+            // Render Table Rows Chronologically
+            patientsList.forEach((patient, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition';
+                tr.innerHTML = `
+                    <td class="p-4 text-center font-bold text-slate-700">${index + 1}</td>
+                    <td class="p-4 font-semibold text-slate-900">${escapeHtml(patient.name)}</td>
+                    <td class="p-4 text-slate-700 font-mono text-xs">${escapeHtml(patient.mobile)}</td>
+                    <td class="p-4 text-slate-600">${patient.age} বছর (${patient.gender})</td>
+                    <td class="p-4 text-slate-600 font-mono text-xs">${escapeHtml(patient.nid)}</td>
+                    <td class="p-4 text-slate-600 max-w-xs truncate">${escapeHtml(patient.address)}</td>
+                    <td class="p-4 text-center">
+                        <span class="px-2.5 py-1 rounded-full text-xs font-bold ${patient.blood === 'জানা নেই' ? 'bg-slate-100 text-slate-500' : 'bg-red-100 text-red-700'}">
+                            ${patient.blood}
+                        </span>
+                    </td>
+                    <td class="p-4 text-center no-print">
+                        <button onclick="viewPatientDetail('${patient.dbKey}')" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-1 mx-auto shadow-sm">
+                            <i class="fa-solid fa-eye"></i> ভিউ
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function viewPatientDetail(dbKey) {
+            const patient = patientsList.find(p => p.dbKey === dbKey);
+            if (!patient) return;
+
+            document.getElementById('viewSerial').innerText = patient.serial;
+            document.getElementById('viewName').innerText = patient.name;
+            document.getElementById('viewMobile').innerText = patient.mobile;
+            document.getElementById('viewAgeGender').innerText = `${patient.age} বছর (${patient.gender})`;
+            document.getElementById('viewNid').innerText = patient.nid;
+            document.getElementById('viewAddress').innerText = patient.address;
+            document.getElementById('viewBlood').innerText = patient.blood;
+            document.getElementById('viewHistory').innerText = patient.history;
+
+            // Set Action handlers inside View Modal
+            document.getElementById('btnEditInModal').onclick = () => editPatient(dbKey);
+            document.getElementById('btnDeleteInModal').onclick = () => deletePatient(dbKey);
+
+            document.getElementById('viewDetailModal').classList.remove('hidden');
+        }
+
+        function editPatient(dbKey) {
+            const patient = patientsList.find(p => p.dbKey === dbKey);
+            if (!patient) return;
+
+            document.getElementById('editKey').value = dbKey;
+            document.getElementById('regName').value = patient.name;
+            document.getElementById('regAge').value = patient.age;
+            document.getElementById('regGender').value = patient.gender;
+            document.getElementById('regNid').value = patient.nid;
+            document.getElementById('regMobile').value = patient.mobile;
+            document.getElementById('regAddress').value = patient.address;
+            document.getElementById('regBlood').value = patient.blood;
+            document.getElementById('regHistory').value = patient.history === 'নাই' ? '' : patient.history;
+
+            closeViewDetailModal();
+            document.getElementById('registrationModal').classList.remove('hidden');
+        }
+
+        async function deletePatient(dbKey) {
+            if (confirm('আপনি কি এই রোগীর রেকর্ডটি মুছে ফেলতে চান?')) {
+                try {
+                    await window.remove(window.ref(window.db, 'patients/' + dbKey));
+                    closeViewDetailModal();
+                    alert('রোগীর তথ্য মুছে ফেলা হয়েছে!');
+                } catch (e) {
+                    console.error("Delete error: ", e);
+                    alert("মুছে ফেলতে সমস্যা হয়েছে।");
+                }
+            }
+        }
+
+        function filterPatientTable() {
+            const query = document.getElementById('adminSearchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('#patientTableBody tr');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function printAdminTable() {
+            window.print();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
